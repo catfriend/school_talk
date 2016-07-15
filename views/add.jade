@@ -1,12 +1,12 @@
+extends layout
+
 block content
-    h1 Chat Rooms from jade!!!:
-    table.table.table-striped
-        thead
-            tr
-                th Name
-                th Id
-        tbody
-            each room in rooms
-                tr
-                    td= room.name
-                    td= room.id
+    h1 Start a new chat room
+
+    form(method="post")
+        fieldset.form-group
+            label(for="name") Name:
+            input.form-control(name="name", type="text", placeholder="Name for your new chat room")
+            small.text-muted Give your chat room a meaningful name so people know what it's about.
+        button.btn.btn-primary(type="submit") Create new chat room
+        a.btn.btn-default(href="admin/rooms") Cancel
