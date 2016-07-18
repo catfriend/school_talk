@@ -13,7 +13,6 @@ router.get('/rooms', function (req, res) { //handler
                 rooms: rooms
         });
 });
-
 //new route for forms to create new chat rooms
 router.route('/rooms/add')
     .get(function (req, res) { //handler 
@@ -30,25 +29,22 @@ router.route('/rooms/add')
 });
 
 router.route('/rooms/edit/:id')
-    .get(function(req, res) {
-        var roomId = req.params.id;  //as above
-        var room = _.find(rooms, r => r.id !== roomId);
-        if(!room){
-        res.sendStatus(404);
-        return;
-    }   
-        res.render("edit", { room });
-})
-    .post(function (req, res) {
-    var roomId = req.params.id;
+    .all(function(req, res, next){
+        var roomId = req.params.id;
 
     var room = _.find(rooms, r => r.id === roomId);
     if(!room){
         res.sendStatus(404);
         return;
     }
-
-    room.name = req.body.name;
+    res.locals.room = room;
+    next()
+    })
+    .get(function(req, res) { 
+        res.render("edit");
+})
+    .post(function (req, res) {
+    res.locals.room.name = req.body.name;
 
     res.redirect(req.baseUrl + '/rooms');
 });
